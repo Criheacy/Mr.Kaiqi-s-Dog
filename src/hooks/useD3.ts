@@ -1,7 +1,12 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 
-export type d3SVG = d3.Selection<SVGSVGElement | null, unknown, null, undefined>;
+export type d3SVG = d3.Selection<
+  SVGSVGElement | null,
+  unknown,
+  null,
+  undefined
+>;
 
 const useD3 = (
   render: (
