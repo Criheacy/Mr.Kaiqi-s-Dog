@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import Aside from "../components/Aside";
 import { Header } from "../components/Window";
-import SignInPeriod from "../components/Charts/SignInPeriod";
+import UserSignInTime from "../components/Charts/UserSignInTime";
 
 const MainPage = () => {
   return (
@@ -11,7 +11,8 @@ const MainPage = () => {
         <Aside />
         {/*<HomePage />*/}
         {/*<SignInRate />*/}
-        <SignInPeriod />
+        {/*<SignInPeriod />*/}
+        <UserSignInTime />
       </ContentContainer>
     </Container>
   );
@@ -38,6 +39,7 @@ const ContentContainer = styled.div`
   display: flex;
   flex-direction: row;
   height: 100%;
+  align-items: stretch;
 `;
 
 export default MainPage;
