@@ -12,7 +12,6 @@ const useD3 = (
   render: (
     svg: d3.Selection<SVGSVGElement | null, unknown, null, undefined>
   ) => void,
-  dep: unknown[],
   autosize: boolean = false
 ) => {
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -31,8 +30,7 @@ const useD3 = (
         `${bbox?.x} ${bbox?.y} ${bbox?.width} ${bbox?.height}`
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [render, ...dep]);
+  }, [autosize, render]);
 
   return svgRef;
 };
