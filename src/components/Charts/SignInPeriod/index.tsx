@@ -8,6 +8,7 @@ import { config } from "./config";
 import { SignInDataType } from "../../../@types/data";
 
 const Preprocess = (signInLog: SignInDataType[]) => {
+  // get period segment length
   const periodListLength = Math.floor(
     config.endTime.diff(config.startTime) / config.step.asMilliseconds()
   );
@@ -38,6 +39,7 @@ const Preprocess = (signInLog: SignInDataType[]) => {
 
   return [beforeCount, ...signInPeriodCount, afterCount].map(
     (item, index, array) => ({
+      // mark BEFORE as -2; mark AFTER as (length + 1)
       index: index === 0 ? -2 : index === array.length - 1 ? index : index - 1,
       count: item,
     })
@@ -63,10 +65,12 @@ const SignInPeriod = () => {
 
   const renderer = useCallback(
     (svg: d3.Selection<SVGSVGElement | null, unknown, null, undefined>) => {
+      // yMax
       const maxCount = Math.min(
         periodList.reduce((prev, item) => Math.max(prev, item.count), 0),
         config.overHeight
       );
+      // xMin, xMin
       const [minIndex, maxIndex] = periodList.reduce(
         ([min, max], item) => [
           Math.min(min, item.index),
@@ -80,6 +84,7 @@ const SignInPeriod = () => {
         ).keys()
       ).map((item) => (item + 1) * config.gridLineScale);
 
+      /* draw background grid lines */
       const gridLineGroup = svg
         .append("g")
         .attr("class", "grid-line-container")
@@ -110,6 +115,7 @@ const SignInPeriod = () => {
         .style("fill", "#A0A0A0")
         .text((item) => item);
 
+      /* draw bar chart */
       const dataGroup = svg
         .append("g")
         .attr("class", "canvas-area")
@@ -163,6 +169,7 @@ const SignInPeriod = () => {
                 .format("HH:mm")
         );
 
+      /* cut over-height bars */
       const overHeightDataGroup = dataGroup.filter(
         (item) => item.count > config.overHeight
       );
