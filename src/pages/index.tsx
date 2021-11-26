@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import Aside from "../components/Aside";
 import { Header } from "../components/Window";
-import SignInRate from "../components/Charts/SignInRate";
+import SignInPeriod from "../components/Charts/SignInPeriod";
 
 const MainPage = () => {
   return (
@@ -10,7 +10,8 @@ const MainPage = () => {
       <ContentContainer>
         <Aside />
         {/*<HomePage />*/}
-        <SignInRate />
+        {/*<SignInRate />*/}
+        <SignInPeriod />
       </ContentContainer>
     </Container>
   );
