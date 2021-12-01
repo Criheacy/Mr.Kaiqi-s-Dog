@@ -7,6 +7,14 @@ import styled from "@emotion/styled";
 import { config } from "./config";
 import chroma from "chroma-js";
 
+type InDormitoryRateType = {
+  user_id: string;
+  user_name: string;
+  diffFromPrev: number;
+  inDormitory: number;
+  totalRecords: number;
+};
+
 const Preprocess = (signInLog: SignInDataType[], user: UserDataType[]) => {
   const userTable = user.map((item) => ({
     user_id: item.user_id,
@@ -31,7 +39,7 @@ const Preprocess = (signInLog: SignInDataType[], user: UserDataType[]) => {
     ...item,
     inDormitory: item.inDormitory / item.totalRecords,
     diffFromPrev: item.diffFromPrev / item.totalRecords,
-  }));
+  })) as InDormitoryRateType[];
 };
 
 const InDormitoryRate = () => {
@@ -43,7 +51,7 @@ const InDormitoryRate = () => {
 
   const colorMap = useCallback((x: number, y: number) => {
     return chroma
-      .scale(["#ffaa00", "#ceec00", "#00c984"])
+      .scale(["#ffaa00", "#e9f100", "#00c984"])
       .domain([0.1, 0.6])(x)
       .darken(y)
       .hex();
@@ -51,12 +59,20 @@ const InDormitoryRate = () => {
 
   const renderer = useCallback(
     (svg: d3.Selection<SVGSVGElement | null, unknown, null, undefined>) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const tooltip = d3
-        .select("#tooltip")
-        .append("div")
-        .style("opacity", 0)
-        .attr("class", "tooltip");
+      const onMouseOver = function (this: SVGCircleElement) {
+        tooltip
+          .style("display", "block")
+          .attr("x", this.cx.baseVal.value)
+          .attr("y", this.cy.baseVal.value - config.tooltipFontSize * 0.6);
+      };
+
+      const onMouseMove = (_: any, userInfo: InDormitoryRateType) => {
+        tooltip.text(userInfo.user_name);
+      };
+
+      const onMouseLeave = () => {
+        tooltip.style("display", "none");
+      };
 
       svg
         .append("text")
@@ -164,8 +180,20 @@ const InDormitoryRate = () => {
         .append("circle")
         .attr("cx", (item) => item.inDormitory * config.xScale)
         .attr("cy", (item) => item.diffFromPrev * config.yScale)
-        .attr("r", 4)
-        .style("fill", (item) => colorMap(item.inDormitory, item.diffFromPrev));
+        .attr("r", 5)
+        .style("fill", (item) => colorMap(item.inDormitory, item.diffFromPrev))
+        .on("mouseover", onMouseOver)
+        .on("mousemove", onMouseMove)
+        .on("mouseleave", onMouseLeave);
+
+      const tooltip = svg
+        .append("text")
+        .attr("class", "tooltip")
+        .attr("pointer-events", "none")
+        .style("display", "none")
+        .attr("fill", "#404040")
+        .attr("font-size", config.tooltipFontSize)
+        .attr("text-anchor", "middle");
     },
     [colorMap, inDormitoryRate]
   );
@@ -177,7 +205,6 @@ const InDormitoryRate = () => {
       <Container>
         <svg ref={svgRef} />
       </Container>
-      <Tooltip id={"tooltip"} />
     </>
   );
 };
@@ -187,10 +214,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const Tooltip = styled.div`
-  position: absolute;
+  position: relative;
 `;
 
 export default InDormitoryRate;
