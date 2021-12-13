@@ -7,7 +7,7 @@ import styled from "@emotion/styled";
 import { config } from "./config";
 import chroma from "chroma-js";
 
-type InDormitoryRateType = {
+type DiffFixedDormitoryType = {
   user_id: string;
   user_name: string;
   diffFromPrev: number;
@@ -39,10 +39,10 @@ const Preprocess = (signInLog: SignInDataType[], user: UserDataType[]) => {
     ...item,
     inDormitory: item.inDormitory / item.totalRecords,
     diffFromPrev: item.diffFromPrev / item.totalRecords,
-  })) as InDormitoryRateType[];
+  })) as DiffFixedDormitoryType[];
 };
 
-const InDormitoryRate = () => {
+const DiffFixedDormitory = () => {
   const { signInLog, user } = useData();
   const inDormitoryRate = useMemo(
     () => Preprocess(signInLog, user),
@@ -66,7 +66,7 @@ const InDormitoryRate = () => {
           .attr("y", this.cy.baseVal.value - config.tooltipFontSize * 0.6);
       };
 
-      const onMouseMove = (_: any, userInfo: InDormitoryRateType) => {
+      const onMouseMove = (_: any, userInfo: DiffFixedDormitoryType) => {
         tooltip.text(userInfo.user_name);
       };
 
@@ -217,4 +217,4 @@ const Container = styled.div`
   position: relative;
 `;
 
-export default InDormitoryRate;
+export default DiffFixedDormitory;

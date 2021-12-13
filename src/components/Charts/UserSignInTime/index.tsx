@@ -50,7 +50,7 @@ const Preprocess = (signInLog: SignInDataType[], user: UserDataType[]) => {
       signInCount,
       signInTimeAverage
     };
-  }).sort((first, second) => first.signInTimeAverage - second.signInTimeAverage);
+  }); //.sort((first, second) => first.signInTimeAverage - second.signInTimeAverage);
 };
 
 const UserSignInTime = () => {
@@ -58,7 +58,7 @@ const UserSignInTime = () => {
   const userSignInTime = useMemo(() => Preprocess(signInLog, user), [signInLog, user]);
 
   const colorMap = useCallback((signInCount?: number | undefined | null) => {
-    const scale = chroma.scale(["#b8ffc3", "#00d924", "#008d2e"]).domain([0, 1]);
+    const scale = chroma.scale(["#ffff00", "#00d924", "#00d2b3", "#00afff"]).domain([0, 0.5, 0.95, 1]);
     if (signInCount === undefined || signInCount === null || signInCount === 0)
       return "transparent";
 
@@ -113,10 +113,10 @@ const UserSignInTime = () => {
 
 const Container = styled.div`
   width: 100%;
-  height: 90%;
-  margin: 1rem;
-  
-  overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 `;
 
 export default UserSignInTime;

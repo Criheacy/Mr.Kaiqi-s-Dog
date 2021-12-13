@@ -10,7 +10,4 @@ export const config = {
   blockGap: 3,
   fontSize: 12,
   blockCornerRadius: 2,
-
-  gridLineScale: 100,
-  gridLineFontSize: 12,
 };

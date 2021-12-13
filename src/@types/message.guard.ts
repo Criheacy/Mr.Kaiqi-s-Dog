@@ -1,7 +1,7 @@
 import React from "react";
-import { MessageType, TimestampType } from "./message";
+import { ConversationType, TimestampType } from "./message";
 
-export const isMessageType = (obj: any): obj is MessageType => {
+export const isMessageType = (obj: any): obj is ConversationType => {
   if (obj === null || obj === undefined) return false;
   if (typeof obj.avatarUrl !== "string") return false;
   if (!(obj.align === "left" || obj.align === "right")) return false;

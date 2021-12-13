@@ -113,10 +113,10 @@ const AllUserSignInTime = () => {
 
 const Container = styled.div`
   width: 100%;
-  height: 90%;
-  margin: 1rem;
-  
-  overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 `;
 
 export default AllUserSignInTime;
